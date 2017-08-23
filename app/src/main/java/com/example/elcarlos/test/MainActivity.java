@@ -1,7 +1,8 @@
-package com.example.elcarlos.test;
+package com.juanbustos.bustos;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.webkit.WebSettings;
@@ -9,25 +10,24 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 public class MainActivity extends AppCompatActivity {
+    WebView myWebView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        WebView myWebView = (WebView) findViewById(R.id.webView);
+        myWebView = (WebView) findViewById(R.id.webView);
         WebSettings webSettings = myWebView.getSettings();
         webSettings.setJavaScriptEnabled(true);
-        myWebView.loadUrl("http://72.9.150.72/~decktrac/ecooking.com/");
+        myWebView.loadUrl("https://juanbustos.com/inicio/");
         myWebView.setWebViewClient(new WebViewClient());
-
-
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
+        return false;
     }
 
     @Override
@@ -45,5 +45,20 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if(isBackKeyPressed(keyCode, event)){
+            if(myWebView.canGoBack())
+                myWebView.goBack();
+            else
+                finish();
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
+    public boolean isBackKeyPressed(int keyCode, KeyEvent event){
+        return event.getAction() == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_BACK;
+    }
 
 }
